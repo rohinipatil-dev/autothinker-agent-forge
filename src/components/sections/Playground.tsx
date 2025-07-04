@@ -4,21 +4,61 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link, Loader2 } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
 
 const Playground = () => {
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!prompt) return;
+    if (!prompt.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter a prompt to generate an agent.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsLoading(true);
     setResult('');
-    setTimeout(() => {
-      setResult('https://your-agent-xyz123.autothinker.dev');
+
+    try {
+      // Replace 'YOUR_RENDER_URL' with your actual Render backend URL
+      const response = await fetch('YOUR_RENDER_URL/api/generate-agent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: prompt.trim() }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Assuming your backend returns an object with an 'agentUrl' field
+      // Adjust this based on your actual API response structure
+      setResult(data.agentUrl || data.url || 'Agent generated successfully');
+      
+      toast({
+        title: "Success",
+        description: "Your AI agent has been generated!",
+      });
+    } catch (error) {
+      console.error('Error generating agent:', error);
+      toast({
+        title: "Error",
+        description: "Failed to generate agent. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
   
   return (
