@@ -11,55 +11,53 @@ const Playground = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!prompt.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter a prompt to generate an agent.",
-        variant: "destructive"
-      });
-      return;
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!prompt.trim()) {
+    toast({
+      title: "Error",
+      description: "Please enter a prompt to generate an agent.",
+      variant: "destructive"
+    });
+    return;
+  }
+
+  setIsLoading(true);
+  setResult('');
+
+  try {
+    const response = await fetch('https://autothinker-backend.onrender.com/build-agent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt: prompt.trim() }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    setIsLoading(true);
-    setResult('');
+    const data = await response.json();
 
-    try {
-      // Replace 'YOUR_RENDER_URL' with your actual Render backend URL
-      const response = await fetch('YOUR_RENDER_URL/api/generate-agent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: prompt.trim() }),
-      });
+    // Your backend returns { "url": ... }
+    setResult(data.url || 'Agent generated successfully');
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      
-      // Assuming your backend returns an object with an 'agentUrl' field
-      // Adjust this based on your actual API response structure
-      setResult(data.agentUrl || data.url || 'Agent generated successfully');
-      
-      toast({
-        title: "Success",
-        description: "Your AI agent has been generated!",
-      });
-    } catch (error) {
-      console.error('Error generating agent:', error);
-      toast({
-        title: "Error",
-        description: "Failed to generate agent. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    toast({
+      title: "Success",
+      description: "Your AI agent has been generated!",
+    });
+  } catch (error) {
+    console.error('Error generating agent:', error);
+    toast({
+      title: "Error",
+      description: "Failed to generate agent. Please try again.",
+      variant: "destructive"
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
   
   return (
     <section id="playground" className="container py-12 md:py-24">
