@@ -3,9 +3,6 @@ import { Button } from '@/components/ui/button';
 import { PlayCircle } from 'lucide-react';
 
 const Demo = () => {
-  // Replace this URL with your actual video URL or path
-  const demoVideoUrl = "/path-to-your-video.mp4"; // Update this with your video
-
   return (
     <section id="demo" className="container py-12 md:py-24 bg-secondary/20 rounded-lg">
       <div className="text-center">
@@ -15,15 +12,13 @@ const Demo = () => {
         </p>
         <div className="mt-6">
           <div className="max-w-4xl mx-auto">
-            <video 
-              src={demoVideoUrl}
-              controls 
+            <iframe 
+              src="https://www.youtube.com/embed/c7W6toGZQHU"
               className="w-full aspect-video rounded-lg shadow-lg"
-              preload="metadata"
-              poster="/path-to-your-video-thumbnail.jpg" // Optional: Add a poster image
-            >
-              Your browser does not support the video tag.
-            </video>
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="AutoThinker Demo Video"
+            />
           </div>
         </div>
       </div>
