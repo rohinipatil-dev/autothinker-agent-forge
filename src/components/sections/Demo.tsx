@@ -12,13 +12,14 @@ const Demo = () => {
         </p>
         <div className="mt-6">
           <div className="max-w-4xl mx-auto">
-            <iframe 
-              src="https://www.youtube.com/embed/c7W6toGZQHU"
+            <video 
+              src="/AutoThinker AI Playground Demo.mp4"
               className="w-full aspect-video rounded-lg shadow-lg"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title="AutoThinker Demo Video"
-            />
+              controls
+              preload="metadata"
+            >
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </div>
