@@ -17,6 +17,12 @@ const Demo = () => {
               className="w-full aspect-video rounded-lg shadow-lg"
               controls
               preload="metadata"
+              onError={(e) => {
+                console.error('Video loading error:', e);
+                console.error('Video src:', e.currentTarget.src);
+              }}
+              onLoadStart={() => console.log('Video load started')}
+              onCanPlay={() => console.log('Video can play')}
             >
               Your browser does not support the video tag.
             </video>
