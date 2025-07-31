@@ -13,7 +13,7 @@ const Demo = () => {
         <div className="mt-6">
           <div className="max-w-4xl mx-auto">
             <video 
-              src="/AutoThinker AI Playground Demo.mp4"
+              src="/AutoThinker_AI_Playground_Demo.mp4"
               className="w-full aspect-video rounded-lg shadow-lg"
               controls
               preload="metadata"
