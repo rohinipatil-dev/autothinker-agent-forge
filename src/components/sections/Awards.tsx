@@ -13,8 +13,8 @@ const Awards = () => {
           <CardContent className="p-6 flex items-center gap-6">
             <Award className="h-12 w-12 text-primary flex-shrink-0" />
             <div>
-              <h3 className="font-bold text-lg">AI Innovator of the Year</h3>
-              <p className="text-muted-foreground">TechCrunch Disrupt 2025</p>
+              <h3 className="font-bold text-lg">Stay tuned.</h3>
+              <p className="text-muted-foreground">We’re just getting started.</p>
             </div>
           </CardContent>
         </Card>
