@@ -80,3 +80,299 @@
     scroll-behavior: smooth;
   }
 }
+/* === Generate button & progress helpers === */
+@keyframes dots {
+  0% { content: ""; }
+  33% { content: "."; }
+  66% { content: ".."; }
+  100% { content: "..."; }
+}
+
+/* Add trailing animated dots after the element text */
+.dotting::after {
+  display: inline-block;
+  width: 1.2ch;
+  text-align: left;
+  animation: dots 1.2s steps(3, end) infinite;
+  content: "...";
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Shimmer effect for progress bar fill */
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+/* === Flowery generate animations === */
+
+/* Blooming radial aura behind the button */
+.flower-bloom {
+  position: relative;
+  overflow: visible;
+}
+.flower-bloom::before {
+  content: "";
+  position: absolute;
+  inset: -14px -24px;
+  background:
+    radial-gradient(100px 80px at 20% 60%, rgba(99,102,241,0.18), transparent 70%),
+    radial-gradient(120px 90px at 80% 40%, rgba(236,72,153,0.18), transparent 70%),
+    radial-gradient(90px 70px at 50% 20%, rgba(56,189,248,0.18), transparent 70%);
+  filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease;
+  border-radius: 24px;
+  z-index: -1;
+}
+.flower-bloom.is-active::before {
+  opacity: 1;
+}
+
+/* Petal confetti */
+@keyframes petal-fall {
+  0% { transform: translateY(0) translateX(0) rotate(0deg) scale(0.8); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(120px) translateX(var(--dx, 0)) rotate(var(--rot, 180deg)) scale(1); opacity: 0; }
+}
+.petal {
+  position: absolute;
+  width: 10px;
+  height: 14px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.2) 60%),
+    radial-gradient(60% 80% at 50% 60%, currentColor, transparent 60%);
+  border-radius: 60% 60% 60% 60% / 70% 70% 40% 40%;
+  opacity: 0;
+  animation: petal-fall 1.8s ease-in forwards;
+  filter: blur(0.2px);
+}
+
+/* Gradient bloom progress */
+.progress-bloom {
+  background: linear-gradient(90deg,
+    rgba(236,72,153,0.75),
+    rgba(99,102,241,0.85),
+    rgba(56,189,248,0.75)
+  );
+  background-size: 200% 100%;
+  animation: bloom-move 2.2s linear infinite;
+}
+@keyframes bloom-move {
+  0% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Floral divider around ETA */
+.floral-line {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+.floral-line::before,
+.floral-line::after {
+  content: "✿";
+  color: rgba(236,72,153,0.9);
+  filter: drop-shadow(0 0 2px rgba(236,72,153,0.35));
+  animation: floral-wiggle 1.8s ease-in-out infinite;
+}
+.floral-line::after {
+  color: rgba(99,102,241,0.95);
+  animation-delay: .4s;
+}
+@keyframes floral-wiggle {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-1px) rotate(6deg); }
+}
+
+/* Helpers: animated dots and shimmer (if not already added) */
+@keyframes dots {
+  0% { content: ""; }
+  33% { content: "."; }
+  66% { content: ".."; }
+  100% { content: "..."; }
+}
+.dotting::after {
+  display: inline-block;
+  width: 1.2ch;
+  text-align: left;
+  animation: dots 1.2s steps(3, end) infinite;
+  content: "...";
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+/* === Flowery generate animations & patterned progress === */
+
+/* Blooming radial aura behind the button */
+.flower-bloom {
+  position: relative;
+  overflow: visible;
+}
+.flower-bloom::before {
+  content: "";
+  position: absolute;
+  inset: -14px -24px;
+  background:
+    radial-gradient(100px 80px at 20% 60%, rgba(99,102,241,0.18), transparent 70%),
+    radial-gradient(120px 90px at 80% 40%, rgba(236,72,153,0.18), transparent 70%),
+    radial-gradient(90px 70px at 50% 20%, rgba(56,189,248,0.18), transparent 70%);
+  filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease;
+  border-radius: 24px;
+  z-index: -1;
+}
+.flower-bloom.is-active::before {
+  opacity: 1;
+}
+
+/* Petal confetti */
+@keyframes petal-fall {
+  0% { transform: translateY(0) translateX(0) rotate(0deg) scale(0.8); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(120px) translateX(var(--dx, 0)) rotate(var(--rot, 180deg)) scale(1); opacity: 0; }
+}
+.petal {
+  position: absolute;
+  width: 10px;
+  height: 14px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.2) 60%),
+    radial-gradient(60% 80% at 50% 60%, currentColor, transparent 60%);
+  border-radius: 60% 60% 60% 60% / 70% 70% 40% 40%;
+  opacity: 0;
+  animation: petal-fall 1.8s ease-in forwards;
+  filter: blur(0.2px);
+}
+
+/* Track with subtle petal texture */
+.progress-track {
+  position: relative;
+  overflow: hidden;
+  border-radius: 9999px;
+  background:
+    radial-gradient(8px 6px at 20% 50%, rgba(255,255,255,0.04), transparent 60%),
+    radial-gradient(10px 7px at 60% 40%, rgba(255,255,255,0.03), transparent 60%),
+    radial-gradient(7px 5px at 80% 70%, rgba(255,255,255,0.04), transparent 60%),
+    rgba(0,0,0,0); /* keep Tailwind bg-muted visible beneath */
+  backdrop-filter: blur(0.5px);
+}
+
+/* Fill container that we clip to width */
+.progress-fill {
+  position: relative;
+  height: 100%;
+  width: 0%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/* Moving gradient "bloom" layer */
+.progress-bloom {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    rgba(236,72,153,0.75),
+    rgba(99,102,241,0.85),
+    rgba(56,189,248,0.75)
+  );
+  background-size: 200% 100%;
+  animation: bloom-move 2.2s linear infinite;
+}
+@keyframes bloom-move {
+  0% { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Floral motif layer: repeating “✿” glyphs drifting */
+.progress-flowers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.progress-flowers::before,
+.progress-flowers::after {
+  content: "✿ ✿ ✿ ✿ ✿ ✿ ✿ ✿ ✿ ✿ ✿ ✿";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  letter-spacing: 24px;
+  white-space: nowrap;
+  color: rgba(255,255,255,0.70);
+  text-shadow:
+    0 0 4px rgba(236,72,153,0.35),
+    0 0 8px rgba(99,102,241,0.25);
+  animation: flowers-drift 6s linear infinite;
+}
+.progress-flowers::before { left: -30%; }
+.progress-flowers::after  { left:  20%; animation-delay: 1.2s; }
+
+@keyframes flowers-drift {
+  0%   { transform: translate(-10%, -50%); }
+  100% { transform: translate(40%, -50%); }
+}
+
+/* Floral divider around ETA */
+.floral-line {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+.floral-line::before,
+.floral-line::after {
+  content: "✿";
+  color: rgba(236,72,153,0.9);
+  filter: drop-shadow(0 0 2px rgba(236,72,153,0.35));
+  animation: floral-wiggle 1.8s ease-in-out infinite;
+}
+.floral-line::after {
+  color: rgba(99,102,241,0.95);
+  animation-delay: .4s;
+}
+@keyframes floral-wiggle {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-1px) rotate(6deg); }
+}
+
+/* Helpers: animated dots and shimmer (safe to keep) */
+@keyframes dots {
+  0% { content: ""; }
+  33% { content: "."; }
+  66% { content: ".."; }
+  100% { content: "..."; }
+}
+.dotting::after {
+  display: inline-block;
+  width: 1.2ch;
+  text-align: left;
+  animation: dots 1.2s steps(3, end) infinite;
+  content: "...";
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
