@@ -25,9 +25,9 @@ const App = () => (
               <Route
                 path="/"
                 element={
-                  <ProtectedRoute>
+                  // <ProtectedRoute>
                     <Index />
-                  </ProtectedRoute>
+                  // </ProtectedRoute>
                 }
               />
               <Route path="*" element={<NotFound />} />
