@@ -85,7 +85,7 @@ const Playground = () => {
     if (btnWrapRef.current) burstPetals(btnWrapRef.current);
 
     // Create fresh AbortController for this request
-    controllerRef.current?.abort(); // cancel any previous request
+    controllerRef.current?.abort();
     controllerRef.current = new AbortController();
 
     try {
@@ -109,11 +109,14 @@ const Playground = () => {
       setResult(url);
 
       if (url) {
+        // Add to collections (this will trigger thumbnail generation automatically)
         addItem(prompt.trim(), url);
+        
         toast({
           title: "Success",
-          description: "Your AI agent has been generated!",
+          description: "Your AI agent has been generated! Creating thumbnail...",
         });
+        
         // celebratory petals on success
         if (btnWrapRef.current) burstPetals(btnWrapRef.current);
       } else {
@@ -124,7 +127,6 @@ const Playground = () => {
         });
       }
 
-      // Stop animation on success
       finish();
     } catch (error: any) {
       if (error?.name === "AbortError") {
@@ -153,7 +155,6 @@ const Playground = () => {
     setIsLoading(false);
   };
 
-  // Check if we're currently generating
   const isGenerating = isRunning || isLoading;
 
   return (
@@ -177,7 +178,6 @@ const Playground = () => {
                 className="min-h-[120px] bg-background"
               />
 
-              {/* Show Generate button only when NOT generating */}
               {!isGenerating && (
                 <div
                   ref={btnWrapRef}
@@ -190,17 +190,14 @@ const Playground = () => {
               )}
             </form>
 
-            {/* Show progress UI only when generating */}
             {isGenerating && (
               <div className="mt-4">
-                {/* Status message */}
                 <div className="text-center mb-4">
                   <span className="inline-flex items-center gap-2 text-sm font-medium">
                     Generating <span className="dotting" />
                   </span>
                 </div>
 
-                {/* Flowery patterned progress bar */}
                 <div className="h-2 w-full bg-muted progress-track">
                   <div
                     className="progress-fill"
@@ -250,4 +247,3 @@ const Playground = () => {
 };
 
 export default Playground;
-
