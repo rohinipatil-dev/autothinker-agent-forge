@@ -1,10 +1,13 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { generateAgentThumbnail } from "@/utils/imageGenerator";
 
 export type CollectionItem = {
   id: string;
-  name: string;   // prompt or agent title
-  url: string;    // agent URL
+  name: string;
+  url: string;
   createdAt: string;
+  thumbnail?: string;
+  thumbnailStatus: 'loading' | 'success' | 'failed';
 };
 
 type CollectionsCtx = {
@@ -12,6 +15,7 @@ type CollectionsCtx = {
   addItem: (name: string, url: string) => void;
   removeItem: (id: string) => void;
   clear: () => void;
+  updateThumbnail: (id: string, thumbnail: string | null) => void;
 };
 
 const CollectionsContext = createContext<CollectionsCtx | undefined>(undefined);
@@ -38,17 +42,73 @@ export function CollectionsProvider({ children }: { children: React.ReactNode })
 
   const addItem = (name: string, url: string) => {
     if (!url) return;
+    
     setItems((prev) => {
-      // optional de-duplication by URL
+      // Check for duplicates
       if (prev.some((i) => i.url === url)) return prev;
-      const next: CollectionItem = {
+      
+      const newItem: CollectionItem = {
         id: crypto.randomUUID(),
         name: name?.trim() || "Untitled Agent",
         url,
         createdAt: new Date().toISOString(),
+        thumbnailStatus: 'loading' // Start with loading status
       };
-      return [next, ...prev];
+      
+      return [newItem, ...prev];
     });
+
+    // Generate thumbnail in background
+    generateThumbnailAsync(name, items.length);
+  };
+
+  const generateThumbnailAsync = async (prompt: string, currentLength: number) => {
+    try {
+      const thumbnail = await generateAgentThumbnail(prompt);
+      
+      // Find the item by checking the most recent item with loading status
+      setItems((prev) => {
+        const itemToUpdate = prev.find(item => item.thumbnailStatus === 'loading');
+        if (!itemToUpdate) return prev;
+
+        return prev.map(item => 
+          item.id === itemToUpdate.id 
+            ? { 
+                ...item, 
+                thumbnail: thumbnail || undefined,
+                thumbnailStatus: thumbnail ? 'success' as const : 'failed' as const
+              }
+            : item
+        );
+      });
+    } catch (error) {
+      console.error('Thumbnail generation failed:', error);
+      // Mark as failed
+      setItems((prev) => {
+        const itemToUpdate = prev.find(item => item.thumbnailStatus === 'loading');
+        if (!itemToUpdate) return prev;
+
+        return prev.map(item => 
+          item.id === itemToUpdate.id 
+            ? { ...item, thumbnailStatus: 'failed' as const }
+            : item
+        );
+      });
+    }
+  };
+
+  const updateThumbnail = (id: string, thumbnail: string | null) => {
+    setItems((prev) => 
+      prev.map(item => 
+        item.id === id 
+          ? { 
+              ...item, 
+              thumbnail: thumbnail || undefined,
+              thumbnailStatus: thumbnail ? 'success' as const : 'failed' as const
+            }
+          : item
+      )
+    );
   };
 
   const removeItem = (id: string) => {
@@ -58,7 +118,7 @@ export function CollectionsProvider({ children }: { children: React.ReactNode })
   const clear = () => setItems([]);
 
   const value = useMemo(
-    () => ({ items, addItem, removeItem, clear }),
+    () => ({ items, addItem, removeItem, clear, updateThumbnail }),
     [items]
   );
 
